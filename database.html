@@ -242,7 +242,7 @@
                     tr.innerHTML = `
                         <td>${user.UserID ?? ''}</td>
                         <td contenteditable="true">${user.Username ?? ''}</td>
-                        <td contenteditable="true" style="font-family:monospace;">${'*'.repeat(user.Password?.length || 0)}</td>
+                        <td contenteditable="true" style="font-family:monospace;">${user.Password ?? ''}</td>
                         <td contenteditable="true">${user.Name ?? ''}</td>
                         <td contenteditable="true">${user.Surname ?? ''}</td>
                         <td contenteditable="true">${user.Tel ?? ''}</td>
