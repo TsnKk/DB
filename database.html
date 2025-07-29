@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ฐานข้อมูลสมาชิก</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .form-container, .container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 1.5px 6px rgba(0,0,0,0.08);
+            padding: 32px 40px;
+            margin: 32px 0;
+            transition: box-shadow 0.3s;
+            animation: popIn 0.7s;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .header h1, h1 {
+            color: #007bff;
+            margin: 0 0 12px 0;
+            font-size: 2em;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px #e3e3e3;
+            font-weight: 700;
+        }
+        .form-group {
+            margin-bottom: 18px;
+            display: grid;
+            grid-template-columns: 120px 1fr; 
+            align-items: center;
+            gap: 12px;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #555;
+            text-align: right;
+            letter-spacing: 0.5px;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            border: 1.5px solid #b2bec3;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #f7faff;
+        }
+        .form-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px #a8edea;
+            outline: none;
+        }
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #007bff 60%, #a8edea 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: background 0.3s, transform 0.2s;
+            letter-spacing: 1px;
+        }
+        .submit-button:hover {
+            background: linear-gradient(90deg, #0056b3 60%, #fed6e3 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .nav {
+            text-align: center;
+            margin-bottom: 24px;
+            margin-top: 12px;
+        }
+        .nav .submit-button {
+            width: auto;
+            display: inline-block;
+            margin: 0 8px;
+            padding: 10px 28px;
+            font-size: 1em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            animation: fadeIn 1s;
+        }
+        th, td {
+            border: 1px solid #e3e3e3;
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 1em;
+        }
+        th {
+            background: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
+            color: #007bff;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        tr:nth-child(even) {
+            background: #f7faff;
+        }
+        tr:hover {
+            background: #eaf6fb;
+            transition: background 0.2s;
+        }
+        td[contenteditable="true"] {
+            background: #fffbe6;
+            transition: background 0.2s;
+        }
+        td[contenteditable="true"]:focus {
+            background: #e3f7ff;
+            outline: 2px solid #007bff;
+        }
+        #result {
+            font-size: 1em;
+            margin-top: 12px;
+            color: #e74c3c;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            min-height: 24px;
+            transition: color 0.2s;
+        }
+        @media (max-width: 600px) {
+            .form-group {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+            .form-group label {
+                text-align: left;
+                margin-bottom: 2px;
+            }
+            .form-container, .container {
+                padding: 18px;
+            }
+            table, th, td {
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align:center;">ฐานข้อมูลสมาชิก</h1>
+        <form id="adminForm" style="text-align:center; margin-bottom:24px;">
+            <input type="password" id="adminPassword" placeholder="รหัสผ่าน Admin" style="padding:8px; font-size:16px;">
+            <button type="submit" class="submit-button">เข้าสู่ระบบ Admin</button>
+        </form>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>UserID</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Tel</th>
+                    <th id="actionHeader" style="display:none;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- ข้อมูลจะถูกเติมที่นี่ -->
+            </tbody>
+        </table>
+        <div id="result" style="text-align:center; color:red;"></div>
+        <div class="nav">
+        <a href="index.html">
+            <button type="button" class="submit-button">สมัครสมาชิก</button>
+        </a>
+        <a href="login.html">
+            <button type="button" class="submit-button">เข้าสู่ระบบ</button>
+        </a>
+    </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const { createClient } = supabase;
+        const supabaseUrl = 'https://ooioxfihdgwtcnvvsqpm.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vaW94ZmloZGd3dGNudnZzcXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM3OTQwNjMsImV4cCI6MjA2OTM3MDA2M30.xvKhayfCkiO8Wt5IRUDZF4MrzCUZeFB4YvPqKQmMdXQ';
+        const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+        let isAdmin = false;
+        const ADMIN_PASSWORD = "AdminPassword"; // เปลี่ยนรหัสนี้ตามต้องการ
+
+        document.getElementById('adminForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('adminPassword').value;
+            if (input === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.getElementById('adminForm').style.display = 'none';
+                document.getElementById('actionHeader').style.display = '';
+                loadUsers();
+            } else {
+                document.getElementById('result').innerText = 'รหัสผ่าน Admin ไม่ถูกต้อง';
+            }
+        });
+
+        async function loadUsers() {
+            const { data, error } = await supabaseClient
+                .from('Information_User')
+                .select('*');
+            if (error) {
+                document.getElementById('result').innerText = 'เกิดข้อผิดพลาด: ' + error.message;
+                return;
+            }
+            const tbody = document.querySelector('#userTable tbody');
+            tbody.innerHTML = '';
+            data.forEach(user => {
+                const tr = document.createElement('tr');
+                if (isAdmin) {
+                    tr.innerHTML = `
+                        <td>${user.UserID ?? ''}</td>
+                        <td contenteditable="true">${user.Username ?? ''}</td>
+                        <td contenteditable="true" style="font-family:monospace;">${'*'.repeat(user.Password?.length || 0)}</td>
+                        <td contenteditable="true">${user.Name ?? ''}</td>
+                        <td contenteditable="true">${user.Surname ?? ''}</td>
+                        <td contenteditable="true">${user.Tel ?? ''}</td>
+                        <td>
+                            <button onclick="saveUser(this, '${user.UserID}')" style="margin-right:6px;">บันทึก</button>
+                            <button onclick="deleteUser('${user.UserID}')" style="background:#e74c3c;">ลบ</button>
+                        </td>
+                    `;
+                } else {
+                    tr.innerHTML = `
+                        <td>${user.UserID ?? ''}</td>
+                        <td>${user.Username ?? ''}</td>
+                        <td style="font-family:monospace;">${'*'.repeat(user.Password?.length || 0)}</td>
+                        <td>${user.Name ?? ''}</td>
+                        <td>${user.Surname ?? ''}</td>
+                        <td>${user.Tel ?? ''}</td>
+                        <td></td>
+                    `;
+                }
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function saveUser(btn, userId) {
+            const tr = btn.parentElement.parentElement;
+            const Username = tr.children[1].innerText.trim();
+            const Password = tr.children[2].innerText.trim();
+            const Name = tr.children[3].innerText.trim();
+            const Surname = tr.children[4].innerText.trim();
+            const Tel = tr.children[5].innerText.trim();
+
+            const { error } = await supabaseClient
+                .from('Information_User')
+                .update({
+                    Username,
+                    Password,
+                    Name,
+                    Surname,
+                    Tel
+                })
+                .eq('UserID', userId);
+
+            if (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            } else {
+                alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+                window.location.reload();
+            }
+        }
+
+        async function deleteUser(userId) {
+            if (!confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่?')) return;
+            const { error } = await supabaseClient
+                .from('Information_User')
+                .delete()
+                .eq('UserID', userId);
+
+            if (error) {
+                document.getElementById('result').innerText = 'เกิดข้อผิดพลาด: ' + error.message;
+            } else {
+                window.location.reload();
+            }
+        }
+
+        loadUsers();
+    </script>
+</body>
+</html>
