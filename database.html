@@ -167,6 +167,13 @@
                 font-size: 0.95em;
             }
         }
+        .fade-out {
+            animation: fadeOut 0.7s forwards;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -271,7 +278,7 @@
             const Username = tr.children[1].innerText.trim();
             const Password = tr.children[2].innerText.trim();
             const Name = tr.children[3].innerText.trim();
-            const Surname = tr.children[4].innerText.trim();
+            const Surname = tr.children[
             const Tel = tr.children[5].innerText.trim();
 
             const { error } = await supabaseClient
@@ -305,6 +312,13 @@
             } else {
                 window.location.reload();
             }
+        }
+
+        function transitionTo(url) {
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 700); // ระยะเวลาเดียวกับ animation
         }
 
         loadUsers();

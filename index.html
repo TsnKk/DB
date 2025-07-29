@@ -167,6 +167,13 @@
                 font-size: 0.95em;
             }
         }
+        .fade-out {
+            animation: fadeOut 0.7s forwards;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -199,7 +206,7 @@
         </form>
         <div id="result" style="text-align:center; margin-top:15px;"></div>
         <div style="text-align:center; margin-bottom:20px;">
-        <a href="login.html">
+        <a href="login.html" onclick="event.preventDefault(); transitionTo('login.html');">
             <button type="button" class="submit-button" style="width:450px; margin-right:10px;">เข้าสู่ระบบ</button>
         </a>
     </div>
@@ -237,10 +244,17 @@
                 document.getElementById('result').innerText = 'สมัครสมาชิกสำเร็จ!';
                 document.getElementById('registerForm').reset();
                 setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 1200); // รอ 1.2 วินาทีเพื่อแสดงข้อความก่อนเปลี่ยนหน้า
+                    transitionTo('login.html');
+                }, 1200);
             }
         });
+
+        function transitionTo(url) {
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 700);
+        }
     </script>
 </body>
 </html>
