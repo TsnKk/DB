@@ -84,7 +84,7 @@
             font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 18px;
+            margin-top: auto ;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             transition: background 0.3s, transform 0.2s;
             letter-spacing: 1px;
@@ -181,8 +181,14 @@
         <h1 style="text-align:center;">ฐานข้อมูลสมาชิก</h1>
         <form id="adminForm" style="text-align:center; margin-bottom:24px;">
             <input type="password" id="adminPassword" placeholder="รหัสผ่าน Admin" style="padding:8px; font-size:16px;">
-            <button type="submit" class="submit-button">เข้าสู่ระบบ Admin</button>
+            <button type="submit" class="submit-button " style="margin-top: 15px ;">เข้าสู่ระบบ Admin</button>
         </form>
+        <div style="text-align:center; margin-bottom:18px;">
+            <div style="display:inline-flex; align-items:center;">
+                <input type="text" id="searchInput" placeholder="ค้นหาชื่อผู้ใช้, ชื่อ, นามสกุล, เบอร์โทร" style="padding:8px; width:320px; border-radius:8px; border:1.5px solid #b2bec3; font-size:1em;">
+                <button type="button" class="submit-button" style="width:auto; padding:8px; margin-left:8px;" onclick="searchUsers()">ค้นหา</button>
+            </div>
+        </div>
         <table id="userTable">
             <thead>
                 <tr>
@@ -233,7 +239,7 @@
             }
         });
 
-        async function loadUsers() {
+        async function loadUsers(filter = '') {
             const { data, error } = await supabaseClient
                 .from('Information_User')
                 .select('*');
@@ -243,7 +249,17 @@
             }
             const tbody = document.querySelector('#userTable tbody');
             tbody.innerHTML = '';
-            data.forEach(user => {
+            let filtered = data;
+            if (filter) {
+                const keyword = filter.toLowerCase();
+                filtered = data.filter(user =>
+                    (user.Username ?? '').toLowerCase().includes(keyword) ||
+                    (user.Name ?? '').toLowerCase().includes(keyword) ||
+                    (user.Surname ?? '').toLowerCase().includes(keyword) ||
+                    (user.Tel ?? '').toLowerCase().includes(keyword)
+                );
+            }
+            filtered.forEach(user => {
                 const tr = document.createElement('tr');
                 if (isAdmin) {
                     tr.innerHTML = `
@@ -320,6 +336,15 @@
                 window.location.href = url;
             }, 700); // ระยะเวลาเดียวกับ animation
         }
+
+        function searchUsers() {
+            const value = document.getElementById('searchInput').value;
+            loadUsers(value);
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') searchUsers();
+        });
 
         loadUsers();
     </script>
